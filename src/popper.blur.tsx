@@ -32,7 +32,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
         return <span
             className={classnames("sci-react-popover--popper", "blur", className)}>
             <Popper {...popperProps} componentFactory={(popperChildProps) => {
-                return [
+                return (
                     <span
                         key="content"
                         className="content"
@@ -52,7 +52,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                                 />
                             )} />
                     </span>
-                ];
+                );
             }} /></span>;
     }
 

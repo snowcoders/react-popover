@@ -28,7 +28,7 @@ export class PopperHover extends React.Component<PopperHoverProps, PopperHoverSt
         return <span
             className={classnames("sci-react-popover--popper", "hover", className)}>
             <Popper {...popperProps} componentFactory={(popperChildProps) => {
-                return [
+                return (
                     <span
                         key="content"
                         {...popperChildProps}
@@ -47,7 +47,7 @@ export class PopperHover extends React.Component<PopperHoverProps, PopperHoverSt
                                 />
                             )} />
                     </span>
-                ];
+                );
             }} /></span>;
     }
 

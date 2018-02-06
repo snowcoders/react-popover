@@ -25,7 +25,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
                 {...popperProps}
                 positionFixed={popperProps.positionFixed || true}
                 componentFactory={(popperChildProps) => {
-                    return [
+                    return (
                         <span
                             key="content"
                             className="content"
@@ -41,7 +41,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
                                     />
                                 )} />
                         </span>
-                    ];
+                    );
                 }} />
         </span>;
     }
