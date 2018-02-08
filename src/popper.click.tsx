@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 import { IPopperProps, Popper, Arrow } from '@snowcoders/react-popper';
-import PopperJS from 'popper.js';
+import * as PopperJS from 'popper.js';
 
 import * as classnames from "classnames";
 
-export interface PopperClickProps extends PopperJS.PopperOptions {
+export interface PopperClickProps extends Popper.PopperOptions {
     className?: string,
     onDismiss: () => void;
 }
