@@ -7,7 +7,7 @@ import * as classnames from "classnames";
 
 export interface PopperBlurProps extends Popper.PopperOptions {
     className?: string,
-    onDismiss: () => void;
+    onDismiss: (event: MouseEvent) => void;
 }
 
 export class PopperBlur extends React.Component<PopperBlurProps> {
@@ -76,7 +76,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
         }
 
         if (!isPopperOrChild) {
-            this.props.onDismiss();
+            this.props.onDismiss(event);
         }
     }
 

@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import { UnstyledButton } from "@snowcoders/react-unstyled-button";
 import { Target } from '@snowcoders/react-popper';
 
 import * as classnames from "classnames";
 
 export interface TargetClickProps {
     className?: string;
-    onClick?: () => void;
+    onClick?: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface TargetClickState {
@@ -20,19 +21,18 @@ export class TargetClick extends React.Component<TargetClickProps, TargetClickSt
 
     render() {
         return <Target componentFactory={(targetProps) => (
-            <span
+            <UnstyledButton
                 {...targetProps}
                 className={classnames("sci-react-popover--target", "click", this.props.className)}
-                tabIndex={0}
                 onClick={this.onClick}>
                 {this.props.children}
-            </span>
+            </UnstyledButton>
         )} />;
     }
 
-    private onClick = () => {
+    private onClick = (event: React.SyntheticEvent<HTMLElement>) => {
         if (this.props.onClick) {
-            this.props.onClick();
+            this.props.onClick(event);
         }
     }
 }

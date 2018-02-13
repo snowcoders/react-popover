@@ -7,7 +7,7 @@ import * as classnames from "classnames";
 
 export interface PopperClickProps extends Popper.PopperOptions {
     className?: string,
-    onDismiss: () => void;
+    onDismiss: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export class PopperClick extends React.Component<PopperClickProps> {
@@ -52,7 +52,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
 
     private onBackgroundClick = (event: React.SyntheticEvent<HTMLElement>) => {
         if (!event.isDefaultPrevented()) {
-            this.props.onDismiss();
+            this.props.onDismiss(event);
         }
     }
 }

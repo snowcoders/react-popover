@@ -1,6 +1,6 @@
 {
   "name": "@snowcoders/react-popover",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "keywords": [
     "Popover",
     "Menu",
@@ -25,14 +25,16 @@
   "author": "Snowcoders",
   "license": "MIT",
   "peerDependencies": {
-    "@snowcoders/react-popper": ">=0.7.9",
+    "@snowcoders/react-popper": ">=0.7.92",
+    "@snowcoders/react-unstyled-button": ">=1.2.1",
     "classnames": ">=2.2.5",
     "popper.js": ">=1.12.0",
     "react": ">=15.4.0",
     "tslib": ">=1.9.0"
   },
   "devDependencies": {
-    "@snowcoders/react-popper": "^0.7.9",
+    "@snowcoders/react-popper": "~0.7.92",
+    "@snowcoders/react-unstyled-button": "~1.2.1",
     "@types/chai": "^4.0.10",
     "@types/classnames": "^2.2.3",
     "@types/enzyme": "^3.1.6",
@@ -68,7 +70,7 @@
     "source-map-support": "^0.5.0",
     "ts-node": "^4.1.0",
     "tsconfig-paths": "^2.6.0",
-    "typescript": "^2.6.2",
-    "tslib": "^1.9.0"
+    "tslib": "^1.9.0",
+    "typescript": "^2.6.2"
   }
 }
