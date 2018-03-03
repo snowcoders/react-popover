@@ -1,7 +1,7 @@
+/// <reference types="popper.js" />
 import * as React from 'react';
 
-import { IPopperProps, Popper, Arrow } from '@snowcoders/react-popper';
-import * as PopperJS from 'popper.js';
+import { IPopperProps, Popper as SnowPopper, Arrow } from '@snowcoders/react-popper';
 
 import * as classnames from "classnames";
 
@@ -31,7 +31,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
         let { children, onDismiss, className, ...popperProps } = this.props;
         return <span
             className={classnames("sci-react-popover--popper", "blur", className)}>
-            <Popper {...popperProps} componentFactory={(popperChildProps) => {
+            <SnowPopper {...popperProps} componentFactory={(popperChildProps) => {
                 return (
                     <span
                         key="content"

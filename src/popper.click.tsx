@@ -1,7 +1,7 @@
+/// <reference types="popper.js" />
 import * as React from 'react';
 
-import { IPopperProps, Popper, Arrow } from '@snowcoders/react-popper';
-import * as PopperJS from 'popper.js';
+import { IPopperProps, Popper as SnowPopper, Arrow } from '@snowcoders/react-popper';
 
 import * as classnames from "classnames";
 
@@ -21,7 +21,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
         return <span
             className={classnames("sci-react-popover--popper", "click", className)}
             onClick={this.onBackgroundClick}>
-            <Popper
+            <SnowPopper
                 {...popperProps}
                 positionFixed={popperProps.positionFixed || true}
                 componentFactory={(popperChildProps) => {
