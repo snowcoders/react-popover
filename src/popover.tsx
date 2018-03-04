@@ -13,6 +13,8 @@ export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover";
 
 export interface PopoverProps {
+    wrapperElementType?: string,
+    wrapperElementProps?: any,
     targetContent?: React.ReactNode;
     popperContent?: React.ReactNode;
     targetType: TargetType,
@@ -35,9 +37,24 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     }
 
     render() {
+        // React 16 means we can render arrays
+        if (this.props.wrapperElementType == null) {
+            return <Manager>
+                {this.renderTarget()}
+                {this.renderPopper()}
+            </Manager>;
+        }
+
+        // React 15 will have to pass a element to wrap everything inside of
+        let wrapperElement = React.createElement(
+            this.props.wrapperElementType,
+            this.props.wrapperElementProps,
+            [
+                this.renderTarget(),
+                this.renderPopper()
+            ]);
         return <Manager>
-            {this.renderTarget()}
-            {this.renderPopper()}
+            {wrapperElement}
         </Manager>;
     }
 
