@@ -12,7 +12,7 @@ import * as classnames from "classnames";
 import { PopperOptions } from "popper.js";
 
 export type TargetType = "click" | "hover";
-export type PopperType = "blur" | "click" | "hover";
+export type PopperType = "blur" | "click" | "hover" | "none";
 
 export interface PopoverProps {
     wrapperElementType?: string,
@@ -71,7 +71,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
                 </TargetClick>
             case "hover":
                 return <TargetHover onHoverChange={(isHovering: boolean) => {
-                    if (this.props.popperType === "hover" || isHovering) {
+                    if (this.props.popperType === "hover" || this.props.popperType === "none" || isHovering) {
                         this.setState({
                             isOpen: isHovering
                         });
@@ -105,6 +105,10 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
                         isOpen: isHovering
                     });
                 }}>
+                    {this.props.popperContent}
+                </PopperHover>
+            case "none":
+                return <PopperHover className={className} {...this.props.popperOptions} onHoverChange={(isHovering: boolean) => { }}>
                     {this.props.popperContent}
                 </PopperHover>
             case "blur":
