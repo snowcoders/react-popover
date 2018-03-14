@@ -49,10 +49,9 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         let wrapperElement = React.createElement(
             this.props.wrapperElementType,
             this.props.wrapperElementProps,
-            [
-                this.renderTarget(),
-                this.renderPopper()
-            ]);
+            this.renderTarget(),
+            this.renderPopper()
+        );
         return <Manager>
             {wrapperElement}
         </Manager>;
