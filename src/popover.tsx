@@ -9,6 +9,8 @@ import { Manager } from '@snowcoders/react-popper';
 
 import * as classnames from "classnames";
 
+import { PopperOptions } from "popper.js";
+
 export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover";
 
@@ -19,7 +21,7 @@ export interface PopoverProps {
     popperContent?: React.ReactNode;
     targetType: TargetType,
     popperType: PopperType,
-    popperOptions: Popper.PopperOptions
+    popperOptions: PopperOptions
 }
 
 export interface PopoverState {

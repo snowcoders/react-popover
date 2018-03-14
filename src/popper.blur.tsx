@@ -1,11 +1,11 @@
-/// <reference types="popper.js" />
 import * as React from 'react';
 
 import { IPopperProps, Popper as SnowPopper, Arrow } from '@snowcoders/react-popper';
 
 import * as classnames from "classnames";
+import { PopperOptions } from "popper.js";
 
-export interface PopperBlurProps extends Popper.PopperOptions {
+export interface PopperBlurProps extends PopperOptions {
     className?: string,
     onDismiss: (event: MouseEvent) => void;
 }
