@@ -15,8 +15,6 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
 
     constructor(props: PopperBlurProps) {
         super(props);
-        this.state = {
-        }
     }
 
     componentDidMount() {

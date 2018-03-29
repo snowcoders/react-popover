@@ -13,3 +13,12 @@ You can also view all the components on our demo site https://snowcoders.github.
 
 # This component
 This set of components helps create popover controls for menus, selects, tooltips and more!
+
+# Change log
+ - 0.4.5
+   - Fixed popper.blur to close if the target is clicked
+   - Added Open and Close methods on Popover
+ - 0.4.4
+   - Added popper.none that is only controled by the target
+ - 0.1.0
+   - Initial release!

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { PopperBlur } from "./popper.blur";
 import { PopperClick } from "./popper.click";
@@ -15,13 +16,13 @@ export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover" | "none";
 
 export interface PopoverProps {
-    wrapperElementType?: string,
-    wrapperElementProps?: any,
-    targetContent?: React.ReactNode;
     popperContent?: React.ReactNode;
-    targetType: TargetType,
+    popperOptions?: PopperOptions,
     popperType: PopperType,
-    popperOptions: PopperOptions
+    targetContent?: React.ReactNode;
+    targetType: TargetType,
+    wrapperElementProps?: any,
+    wrapperElementType?: string,
 }
 
 export interface PopoverState {
@@ -29,6 +30,7 @@ export interface PopoverState {
 }
 
 export class Popover extends React.Component<PopoverProps, PopoverState> {
+    private targetClickRef: TargetClick | null;
 
     constructor(props: PopoverProps) {
         super(props);
@@ -36,6 +38,18 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         this.state = {
             isOpen: false
         }
+    }
+
+    public open() {
+        this.setState({
+            isOpen: true
+        });
+    }
+
+    public close() {
+        this.setState({
+            isOpen: false
+        });
     }
 
     render() {
@@ -62,7 +76,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     private renderTarget() {
         switch (this.props.targetType) {
             case "click":
-                return <TargetClick onClick={() => {
+                return <TargetClick ref={(ref) => { this.targetClickRef = ref }} onClick={() => {
                     this.setState({
                         isOpen: !this.state.isOpen
                     });
@@ -112,7 +126,17 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
                     {this.props.popperContent}
                 </PopperHover>
             case "blur":
-                return <PopperBlur className={className} {...this.props.popperOptions} onDismiss={() => {
+                return <PopperBlur className={className} {...this.props.popperOptions} onDismiss={(event: MouseEvent) => {
+                    if (!this.state.isOpen) {
+                        return;
+                    }
+                    if (this.targetClickRef != null) {
+                        let target = ReactDOM.findDOMNode(this.targetClickRef);
+                        if (target == event.target) {
+                            // The click target will close the popper
+                            return;
+                        }
+                    }
                     this.setState({
                         isOpen: false
                     });
