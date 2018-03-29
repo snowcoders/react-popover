@@ -13,8 +13,6 @@ export interface PopperClickProps extends PopperOptions {
 export class PopperClick extends React.Component<PopperClickProps> {
     constructor(props: PopperClickProps) {
         super(props);
-        this.state = {
-        }
     }
     render() {
         let { children, onDismiss, className, ...popperProps } = this.props;
