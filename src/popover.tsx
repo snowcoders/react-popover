@@ -23,6 +23,7 @@ export interface PopoverProps {
     targetType: TargetType,
     wrapperElementProps?: any,
     wrapperElementType?: string,
+    onOpenChange?: (isOpen: boolean) => void
 }
 
 export interface PopoverState {
@@ -50,6 +51,12 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         this.setState({
             isOpen: false
         });
+    }
+
+    componentDidUpdate(prevProps: PopoverProps, prevState: PopoverState) {
+        if (this.props.onOpenChange != null && this.state.isOpen !== prevState.isOpen) {
+            this.props.onOpenChange(this.state.isOpen);
+        }
     }
 
     render() {
@@ -132,8 +139,17 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
                     }
                     if (this.targetClickRef != null) {
                         let target = ReactDOM.findDOMNode(this.targetClickRef);
-                        if (target == event.target) {
-                            // The click target will close the popper
+                        let isTargetOrChild = false;
+                        let sourceElement: Element | null = event.srcElement;
+                        while (sourceElement != null) {
+                            if (target == sourceElement) {
+                                isTargetOrChild = true;
+                                break;
+                            }
+                            sourceElement = sourceElement.parentElement;
+                        }
+
+                        if (isTargetOrChild) {
                             return;
                         }
                     }
