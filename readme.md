@@ -12,8 +12,28 @@ We highly recommend visiting the react-ui-base repository to understand how to c
 You can also view all the components on our demo site https://snowcoders.github.io/react-ui-base/
 
 # This component
-This set of components helps create popover controls for menus, selects, tooltips and more!
+90% of popovers fall into a basic category of I have a target that opens a popover and I want a popover that dismisses after a user action. This library summarizes that logic by providing Target types and Popover types that are interchangable. Currently, the available types are
+ - Target
+   - Click - Popover opens when the user clicks on the target
+   - Hover - Popover opens when the user hovers on the target
+ - Popover
+   - Click - Popover closes when the user clicks anything except the popover. This click is not sent to the document.
+   - Blur - Popover closes when the user clicks anything except the popover. This click is sent to the document.
+   - Hover - Popover closes when the user hovers off of the popover
 
+# Basic usage
+To see a live example, go to our demo site https://snowcoders.github.io/react-ui-base/
+```
+<Popover
+  popperContent={"I'm inside the popover"}
+  popperOptions={{
+      placement: "bottom"
+  }}
+  popperType={"hover"}
+  targetContent={"I'm the target text"}
+  targetType={"hover"}
+/>
+```
 # Change log
  - 0.4.5
    - Fixed popper.blur to close if the target is clicked
