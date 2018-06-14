@@ -35,6 +35,8 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 />
 ```
 # Change log
+ - 0.5.0
+   - Added peer-dependency to react-resize-detector to fix position on content size changes
  - 0.4.5
    - Fixed popper.blur to close if the target is clicked
    - Added Open and Close methods on Popover
