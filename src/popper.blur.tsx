@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IPopperProps, Popper as SnowPopper, Arrow } from '@snowcoders/react-popper';
+import { default as ReactResizeDetector } from 'react-resize-detector';
 
 import * as classnames from "classnames";
 import { PopperOptions } from "popper.js";
@@ -41,6 +42,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                         }}
                         onClick={this.onPopperClick}>
                         {children}
+                        <ReactResizeDetector handleWidth handleHeight skipOnMount onResize={this.onResize} />
                         <Arrow
                             key="arrow"
                             componentFactory={(arrowProps) => (
@@ -52,6 +54,10 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                     </span>
                 );
             }} /></span>;
+    }
+
+    private onResize = () => {
+        this.forceUpdate();
     }
 
     private onDocumentMouseDown = (event: MouseEvent) => {
