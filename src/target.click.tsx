@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Target } from "@snowcoders/react-popper";
 import { UnstyledButton } from "@snowcoders/react-unstyled-button";
+import { Reference } from "react-popper";
 
 import * as classnames from "classnames";
 
@@ -22,10 +22,10 @@ export class TargetClick extends React.Component<
 
   render() {
     return (
-      <Target
-        componentFactory={targetProps => (
+      <Reference>
+        {({ ref }) => (
           <UnstyledButton
-            {...targetProps}
+            ref={ref as any}
             className={classnames(
               "sci-react-popover--target",
               "click",
@@ -36,7 +36,7 @@ export class TargetClick extends React.Component<
             {this.props.children}
           </UnstyledButton>
         )}
-      />
+      </Reference>
     );
   }
 

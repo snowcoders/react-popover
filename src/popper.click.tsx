@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import {
-  Arrow,
-  Popper as SnowPopper,
-  IPopperProps
-} from "@snowcoders/react-popper";
+import { Popper } from "react-popper";
 import { default as ReactResizeDetector } from "react-resize-detector";
 
 import * as classnames from "classnames";
@@ -22,39 +18,32 @@ export class PopperClick extends React.Component<PopperClickProps> {
   render() {
     let { children, className, onDismiss, ...popperProps } = this.props;
     return (
-      <span
-        className={classnames("sci-react-popover--popper", "click", className)}
-        onClick={this.onBackgroundClick}
-      >
-        <SnowPopper
-          {...popperProps}
-          positionFixed={popperProps.positionFixed || true}
-          componentFactory={popperChildProps => {
-            return (
-              <span
-                key="content"
-                className="content"
-                {...popperChildProps}
-                onClick={this.onPopperClick}
-              >
-                {children}
-                <ReactResizeDetector
-                  handleWidth
-                  handleHeight
-                  skipOnMount
-                  onResize={this.onResize}
-                />
-                <Arrow
-                  key="arrow"
-                  componentFactory={arrowProps => (
-                    <span {...arrowProps} className="popper__arrow" />
-                  )}
-                />
-              </span>
-            );
-          }}
-        />
-      </span>
+      <Popper>
+        {({ ref, style, placement, arrowProps }) => (
+          <span
+            ref={ref}
+            className={classnames(
+              "sci-react-popover--popper",
+              "click",
+              className
+            )}
+            onClick={this.onPopperClick}
+          >
+            {children}
+            <ReactResizeDetector
+              handleWidth
+              handleHeight
+              skipOnMount
+              onResize={this.onResize}
+            />
+            <span
+              ref={arrowProps.ref}
+              style={arrowProps.style}
+              className="popper__arrow"
+            />
+          </span>
+        )}
+      </Popper>
     );
   }
 
