@@ -16,9 +16,11 @@ export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover" | "none";
 
 export interface PopoverProps {
+  popperClassName?: string;
   popperContent?: React.ReactNode;
   popperOptions?: PopperOptions;
   popperType: PopperType;
+  targetClassName?: string;
   targetContent?: React.ReactNode;
   targetType: TargetType;
   wrapperElementProps?: any;
@@ -84,10 +86,18 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   private renderTarget() {
-    switch (this.props.targetType) {
+    const {
+      popperType,
+      targetClassName,
+      targetContent,
+      targetType
+    } = this.props;
+
+    switch (targetType) {
       case "click":
         return (
           <TargetClick
+            className={targetClassName}
             onClick={() => {
               this.setState({
                 isOpen: !this.state.isOpen
@@ -97,16 +107,17 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
               this.targetClickRef = ref;
             }}
           >
-            {this.props.targetContent}
+            {targetContent}
           </TargetClick>
         );
       case "hover":
         return (
           <TargetHover
+            className={targetClassName}
             onHoverChange={(isHovering: boolean) => {
               if (
-                this.props.popperType === "hover" ||
-                this.props.popperType === "none" ||
+                popperType === "hover" ||
+                popperType === "none" ||
                 isHovering
               ) {
                 this.setState({
@@ -115,7 +126,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
               }
             }}
           >
-            {this.props.targetContent}
+            {targetContent}
           </TargetHover>
         );
       default:
@@ -124,55 +135,57 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   private renderPopper() {
-    let className = undefined;
+    const { popperContent, popperOptions, popperType } = this.props;
+
+    let className = this.props.popperClassName;
     if (this.state.isOpen) {
-      className = "visible";
+      className = classnames(className, "visible");
     }
 
-    switch (this.props.popperType) {
+    switch (popperType) {
       case "click":
         return (
           <PopperClick
             className={className}
-            {...this.props.popperOptions}
+            {...popperOptions}
             onDismiss={() => {
               this.setState({
                 isOpen: false
               });
             }}
           >
-            {this.props.popperContent}
+            {popperContent}
           </PopperClick>
         );
       case "hover":
         return (
           <PopperHover
             className={className}
-            {...this.props.popperOptions}
+            {...popperOptions}
             onHoverChange={(isHovering: boolean) => {
               this.setState({
                 isOpen: isHovering
               });
             }}
           >
-            {this.props.popperContent}
+            {popperContent}
           </PopperHover>
         );
       case "none":
         return (
           <PopperHover
             className={className}
-            {...this.props.popperOptions}
+            {...popperOptions}
             onHoverChange={(isHovering: boolean) => {}}
           >
-            {this.props.popperContent}
+            {popperContent}
           </PopperHover>
         );
       case "blur":
         return (
           <PopperBlur
             className={className}
-            {...this.props.popperOptions}
+            {...popperOptions}
             onDismiss={(event: MouseEvent) => {
               if (!this.state.isOpen) {
                 return;
@@ -198,7 +211,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
               });
             }}
           >
-            {this.props.popperContent}
+            {popperContent}
           </PopperBlur>
         );
       default:
