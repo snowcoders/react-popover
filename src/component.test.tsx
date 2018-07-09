@@ -1,5 +1,3 @@
 describe("Component", () => {
-    it("success", () => {
-
-    });
+  it("success", () => {});
 });

@@ -35,6 +35,8 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 />
 ```
 # Change log
+ - 0.5.1
+   - Added classname overrides for the target and popper to make customization easier
  - 0.5.0
    - Added peer-dependency to react-resize-detector to fix position on content size changes
  - 0.4.5
