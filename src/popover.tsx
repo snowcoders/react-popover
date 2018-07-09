@@ -19,8 +19,10 @@ export interface PopoverProps {
     popperContent?: React.ReactNode;
     popperOptions?: PopperOptions,
     popperType: PopperType,
+    popperClassName?: string,
     targetContent?: React.ReactNode;
     targetType: TargetType,
+    targetClassName?: string,
     wrapperElementProps?: any,
     wrapperElementType?: string,
     onOpenChange?: (isOpen: boolean) => void
@@ -81,24 +83,26 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     }
 
     private renderTarget() {
-        switch (this.props.targetType) {
+        const {targetType, targetContent, targetClassName, popperType} = this.props;
+
+        switch (targetType) {
             case "click":
-                return <TargetClick ref={(ref) => { this.targetClickRef = ref }} onClick={() => {
+                return <TargetClick className={targetClassName} ref={(ref) => { this.targetClickRef = ref }} onClick={() => {
                     this.setState({
                         isOpen: !this.state.isOpen
                     });
                 }}>
-                    {this.props.targetContent}
+                    {targetContent}
                 </TargetClick>
             case "hover":
-                return <TargetHover onHoverChange={(isHovering: boolean) => {
-                    if (this.props.popperType === "hover" || this.props.popperType === "none" || isHovering) {
+                return <TargetHover className={targetClassName} onHoverChange={(isHovering: boolean) => {
+                    if (popperType === "hover" || popperType === "none" || isHovering) {
                         this.setState({
                             isOpen: isHovering
                         });
                     }
                 }}>
-                    {this.props.targetContent}
+                    {targetContent}
                 </TargetHover>
             default:
                 throw new Error("Target type must be either click or hover");
@@ -106,34 +110,36 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     }
 
     private renderPopper() {
-        let className = undefined;
+        const {popperOptions, popperContent, popperType} = this.props;
+
+        let className = this.props.popperClassName;
         if (this.state.isOpen) {
-            className = "visible";
+            className = classnames(className, "visible");
         }
 
-        switch (this.props.popperType) {
+        switch (popperType) {
             case "click":
-                return <PopperClick className={className} {...this.props.popperOptions} onDismiss={() => {
+                return <PopperClick className={className} {...popperOptions} onDismiss={() => {
                     this.setState({
                         isOpen: false
                     });
                 }}>
-                    {this.props.popperContent}
+                    {popperContent}
                 </PopperClick>
             case "hover":
-                return <PopperHover className={className} {...this.props.popperOptions} onHoverChange={(isHovering: boolean) => {
+                return <PopperHover className={className} {...popperOptions} onHoverChange={(isHovering: boolean) => {
                     this.setState({
                         isOpen: isHovering
                     });
                 }}>
-                    {this.props.popperContent}
+                    {popperContent}
                 </PopperHover>
             case "none":
-                return <PopperHover className={className} {...this.props.popperOptions} onHoverChange={(isHovering: boolean) => { }}>
-                    {this.props.popperContent}
+                return <PopperHover className={className} {...popperOptions} onHoverChange={(isHovering: boolean) => { }}>
+                    {popperContent}
                 </PopperHover>
             case "blur":
-                return <PopperBlur className={className} {...this.props.popperOptions} onDismiss={(event: MouseEvent) => {
+                return <PopperBlur className={className} {...popperOptions} onDismiss={(event: MouseEvent) => {
                     if (!this.state.isOpen) {
                         return;
                     }
@@ -157,7 +163,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
                         isOpen: false
                     });
                 }}>
-                    {this.props.popperContent}
+                    {popperContent}
                 </PopperBlur>
             default:
                 throw new Error("Target type must be either click or hover");
