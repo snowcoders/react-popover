@@ -24,33 +24,31 @@ export class TargetHover extends React.Component<
   render() {
     return (
       <Reference>
-        {({ ref }) => {
-          return (
-            <span
-              ref={ref}
-              className={classnames(
-                "sci-react-popover--target",
-                "hover",
-                this.props.className
-              )}
-              tabIndex={0}
-              onMouseOver={() => {
-                this.onHoverChange(true);
-              }}
-              onMouseOut={() => {
-                this.onHoverChange(false);
-              }}
-              onFocus={() => {
-                this.onHoverChange(true);
-              }}
-              onBlur={() => {
-                this.onHoverChange(false);
-              }}
-            >
-              {this.props.children}
-            </span>
-          );
-        }}
+        {({ ref }) => (
+          <span
+            ref={ref}
+            className={classnames(
+              "sci-react-popover--target",
+              "hover",
+              this.props.className
+            )}
+            tabIndex={0}
+            onMouseOver={() => {
+              this.onHoverChange(true);
+            }}
+            onMouseOut={() => {
+              this.onHoverChange(false);
+            }}
+            onFocus={() => {
+              this.onHoverChange(true);
+            }}
+            onBlur={() => {
+              this.onHoverChange(false);
+            }}
+          >
+            {this.props.children}
+          </span>
+        )}
       </Reference>
     );
   }
