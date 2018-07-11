@@ -3,7 +3,7 @@
 
 # Use it
 
-`npm install --save @snowcoders/react-popover save-prefix ~`
+`npm install --save @snowcoders/react-popover save-prefix "~"`
 
 # Parent Library
 
@@ -15,7 +15,7 @@ You can also view all the components on our demo site https://snowcoders.github.
 
 # This component
 
-95% of popovers fall into a basic category of I have a target that opens a popover and I want a popover that dismisses after a user action. This library summarizes that logic by providing Target types and Popover types that are interchangable. Currently, the available types are
+~95% of popovers fall into a basic category of I have a target that opens a popover and I want a popover that dismisses after a user action. This library summarizes that logic by providing Target types and Popover types that are interchangable. Currently, the available types are
 
 - Target
   - Click - Popover opens when the user clicks on the target
