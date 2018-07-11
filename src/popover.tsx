@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Manager } from "@snowcoders/react-popper";
+import { Manager } from "react-popper";
 import { PopperBlur } from "./popper.blur";
 import { PopperClick } from "./popper.click";
 import { PopperHover } from "./popper.hover";
@@ -34,6 +34,7 @@ export interface PopoverState {
 
 export class Popover extends React.Component<PopoverProps, PopoverState> {
   private targetClickRef: null | TargetClick;
+  private popperRef: null | HTMLElement;
 
   constructor(props: PopoverProps) {
     super(props);
@@ -41,6 +42,13 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     this.state = {
       isOpen: false
     };
+
+    if (
+      React.version.indexOf("15.") === 0 &&
+      this.props.wrapperElementType == null
+    ) {
+      console.warn("Must provide wrapperElementType for React version 15.*.*");
+    }
   }
 
   public open() {
@@ -218,4 +226,9 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         throw new Error("Target type must be either click or hover");
     }
   }
+
+  private setPopperRef = (ref: HTMLElement | null) => {
+    if (ref != null) {
+    }
+  };
 }

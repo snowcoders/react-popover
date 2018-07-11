@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import {
-  Arrow,
-  Popper as SnowPopper,
-  IPopperProps
-} from "@snowcoders/react-popper";
+import { Popper } from "react-popper";
 import { default as ReactResizeDetector } from "react-resize-detector";
 
 import * as classnames from "classnames";
@@ -33,21 +29,18 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
   render() {
     let { children, className, onDismiss, ...popperProps } = this.props;
     return (
-      <span
+      <div
         className={classnames("sci-react-popover--popper", "blur", className)}
+        ref={this.onRef}
       >
-        <SnowPopper
-          {...popperProps}
-          componentFactory={popperChildProps => {
+        <Popper {...popperProps}>
+          {({ ref, style, placement, arrowProps }) => {
             return (
-              <span
-                key="content"
+              <div
                 className="content"
-                {...popperChildProps}
-                ref={ref => {
-                  popperChildProps.ref(ref);
-                  this.contentRef = ref;
-                }}
+                ref={ref}
+                style={style}
+                data-placement={placement}
                 onClick={this.onPopperClick}
               >
                 {children}
@@ -57,19 +50,22 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                   skipOnMount
                   onResize={this.onResize}
                 />
-                <Arrow
-                  key="arrow"
-                  componentFactory={arrowProps => (
-                    <span {...arrowProps} className="popper__arrow" />
-                  )}
+                <span
+                  ref={arrowProps.ref}
+                  style={arrowProps.style}
+                  className="popper__arrow"
                 />
-              </span>
+              </div>
             );
           }}
-        />
-      </span>
+        </Popper>
+      </div>
     );
   }
+
+  private onRef = (ref: HTMLElement | null) => {
+    this.contentRef = ref;
+  };
 
   private onResize = () => {
     this.forceUpdate();

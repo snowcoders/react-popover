@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import {
-  Arrow,
-  Popper as SnowPopper,
-  IPopperProps
-} from "@snowcoders/react-popper";
+import { Popper } from "react-popper";
 import { default as ReactResizeDetector } from "react-resize-detector";
 
 import * as classnames from "classnames";
@@ -31,54 +27,43 @@ export class PopperHover extends React.Component<
       isPopperHovering: false
     };
   }
+
   render() {
     let { children, className, onHoverChange, ...popperProps } = this.props;
     return (
-      <span
+      <div
         className={classnames("sci-react-popover--popper", "hover", className)}
+        onMouseOut={() => {
+          this.onPopperHover(false);
+        }}
+        onMouseOver={() => {
+          this.onPopperHover(true);
+        }}
       >
-        <SnowPopper
-          {...popperProps}
-          componentFactory={popperChildProps => {
-            return (
+        <Popper {...popperProps}>
+          {({ ref, style, placement, arrowProps }) => (
+            <div
+              className="content"
+              ref={ref}
+              style={style}
+              data-placement={placement}
+            >
+              {children}
+              <ReactResizeDetector
+                handleWidth
+                handleHeight
+                skipOnMount
+                onResize={this.onResize}
+              />
               <span
-                key="content"
-                {...popperChildProps}
-                className="content"
-                onMouseOver={() => {
-                  this.onPopperHover(true);
-                }}
-                onMouseOut={() => {
-                  this.onPopperHover(false);
-                }}
-              >
-                {children}
-                <ReactResizeDetector
-                  handleWidth
-                  handleHeight
-                  skipOnMount
-                  onResize={this.onResize}
-                />
-                <Arrow
-                  key="arrow"
-                  componentFactory={arrowProps => (
-                    <span
-                      {...arrowProps}
-                      className="popper__arrow"
-                      onMouseOver={() => {
-                        this.onArrowHover(true);
-                      }}
-                      onMouseOut={() => {
-                        this.onArrowHover(false);
-                      }}
-                    />
-                  )}
-                />
-              </span>
-            );
-          }}
-        />
-      </span>
+                ref={arrowProps.ref}
+                style={arrowProps.style}
+                className="popper__arrow"
+              />
+            </div>
+          )}
+        </Popper>
+      </div>
     );
   }
 
@@ -94,21 +79,6 @@ export class PopperHover extends React.Component<
     this.setState(
       {
         isPopperHovering: isHovering
-      },
-      () => {
-        this.props.onHoverChange(isHovering);
-      }
-    );
-  }
-
-  private onArrowHover(isHovering: boolean) {
-    if (isHovering === this.state.isArrowHovering) {
-      return;
-    }
-
-    this.setState(
-      {
-        isArrowHovering: isHovering
       },
       () => {
         this.props.onHoverChange(isHovering);

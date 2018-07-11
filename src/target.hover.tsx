@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Target } from "@snowcoders/react-popper";
+import { Reference } from "react-popper";
 
 import * as classnames from "classnames";
 
@@ -23,10 +23,10 @@ export class TargetHover extends React.Component<
 
   render() {
     return (
-      <Target
-        componentFactory={targetProps => (
+      <Reference>
+        {({ ref }) => (
           <span
-            {...targetProps}
+            ref={ref}
             className={classnames(
               "sci-react-popover--target",
               "hover",
@@ -49,7 +49,7 @@ export class TargetHover extends React.Component<
             {this.props.children}
           </span>
         )}
-      />
+      </Reference>
     );
   }
 
