@@ -1,5 +1,6 @@
 {
   "name": "@snowcoders/react-popover",
+  "description": "Wrapper around react-popper that handles ~95% of popper scenarios",
   "version": "1.0.0",
   "keywords": [
     "Popover",
@@ -51,7 +52,7 @@
     "tslib": ">=1.9.0"
   },
   "devDependencies": {
-    "@snowcoders/react-unstyled-button": "~1.2.1",
+    "@snowcoders/react-unstyled-button": "~1.2.2",
     "@snowcoders/sortier": "^2.1.7",
     "@types/classnames": "^2.2.4",
     "@types/enzyme": "^3.1.11",

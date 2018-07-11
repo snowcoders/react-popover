@@ -24,17 +24,18 @@ export class TargetClick extends React.Component<
     return (
       <Reference>
         {({ ref }) => (
-          <UnstyledButton
-            ref={ref as any}
+          <span
+            ref={ref}
             className={classnames(
               "sci-react-popover--target",
               "click",
               this.props.className
             )}
-            onClick={this.onClick}
           >
-            {this.props.children}
-          </UnstyledButton>
+            <UnstyledButton onClick={this.onClick}>
+              {this.props.children}
+            </UnstyledButton>
+          </span>
         )}
       </Reference>
     );

@@ -29,37 +29,43 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
   render() {
     let { children, className, onDismiss, ...popperProps } = this.props;
     return (
-      <Popper>
-        {({ ref, style, placement, arrowProps }) => (
-          <span
-            className={classnames(
-              "sci-react-popover--popper",
-              "blur",
-              className
-            )}
-            onClick={this.onPopperClick}
-            ref={newRef => {
-              ref(newRef);
-              this.contentRef = newRef;
-            }}
-          >
-            {children}
-            <ReactResizeDetector
-              handleWidth
-              handleHeight
-              skipOnMount
-              onResize={this.onResize}
-            />
-            <span
-              ref={arrowProps.ref}
-              style={arrowProps.style}
-              className="popper__arrow"
-            />
-          </span>
-        )}
-      </Popper>
+      <div
+        className={classnames("sci-react-popover--popper", "blur", className)}
+        ref={this.onRef}
+      >
+        <Popper {...popperProps}>
+          {({ ref, style, placement, arrowProps }) => {
+            return (
+              <div
+                className="content"
+                ref={ref}
+                style={style}
+                data-placement={placement}
+                onClick={this.onPopperClick}
+              >
+                {children}
+                <ReactResizeDetector
+                  handleWidth
+                  handleHeight
+                  skipOnMount
+                  onResize={this.onResize}
+                />
+                <span
+                  ref={arrowProps.ref}
+                  style={arrowProps.style}
+                  className="popper__arrow"
+                />
+              </div>
+            );
+          }}
+        </Popper>
+      </div>
     );
   }
+
+  private onRef = (ref: HTMLElement | null) => {
+    this.contentRef = ref;
+  };
 
   private onResize = () => {
     this.forceUpdate();

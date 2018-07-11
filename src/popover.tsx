@@ -34,6 +34,7 @@ export interface PopoverState {
 
 export class Popover extends React.Component<PopoverProps, PopoverState> {
   private targetClickRef: null | TargetClick;
+  private popperRef: null | HTMLElement;
 
   constructor(props: PopoverProps) {
     super(props);
@@ -225,4 +226,9 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         throw new Error("Target type must be either click or hover");
     }
   }
+
+  private setPopperRef = (ref: HTMLElement | null) => {
+    if (ref != null) {
+    }
+  };
 }

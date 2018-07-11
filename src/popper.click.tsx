@@ -18,32 +18,35 @@ export class PopperClick extends React.Component<PopperClickProps> {
   render() {
     let { children, className, onDismiss, ...popperProps } = this.props;
     return (
-      <Popper>
-        {({ ref, style, placement, arrowProps }) => (
-          <span
-            ref={ref}
-            className={classnames(
-              "sci-react-popover--popper",
-              "click",
-              className
-            )}
-            onClick={this.onPopperClick}
-          >
-            {children}
-            <ReactResizeDetector
-              handleWidth
-              handleHeight
-              skipOnMount
-              onResize={this.onResize}
-            />
-            <span
-              ref={arrowProps.ref}
-              style={arrowProps.style}
-              className="popper__arrow"
-            />
-          </span>
-        )}
-      </Popper>
+      <div
+        className={classnames("sci-react-popover--popper", "click", className)}
+        onClick={this.onBackgroundClick}
+      >
+        <Popper {...popperProps}>
+          {({ ref, style, placement, arrowProps }) => (
+            <div
+              className="content"
+              ref={ref}
+              style={style}
+              data-placement={placement}
+              onClick={this.onPopperClick}
+            >
+              {children}
+              <ReactResizeDetector
+                handleWidth
+                handleHeight
+                skipOnMount
+                onResize={this.onResize}
+              />
+              <span
+                ref={arrowProps.ref}
+                style={arrowProps.style}
+                className="popper__arrow"
+              />
+            </div>
+          )}
+        </Popper>
+      </div>
     );
   }
 
