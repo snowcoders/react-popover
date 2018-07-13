@@ -3,8 +3,13 @@
   "description": "Wrapper around react-popper that handles ~95% of popper scenarios",
   "version": "1.0.0",
   "keywords": [
+    "Popper",
+    "popper.js",
     "Popover",
+    "Popup",
+    "Hover",
     "Menu",
+    "Dropdown",
     "Tooltip",
     "Select",
     "Accessibility"

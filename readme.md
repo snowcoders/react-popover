@@ -1,3 +1,5 @@
+Wrapper around react-popper that handles ~95% of popper scenarios
+
 [![npm (scoped)](https://img.shields.io/npm/v/@snowcoders/react-popover.svg)](https://www.npmjs.com/package/@snowcoders/react-popover)
 [![CircleCI branch](https://img.shields.io/circleci/project/github/snowcoders/react-popover/master.svg)](https://circleci.com/gh/snowcoders/react-popover)
 
