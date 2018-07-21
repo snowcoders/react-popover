@@ -9,6 +9,7 @@ import { PopperOptions } from "popper.js";
 export interface PopperBlurProps extends PopperOptions {
   className?: string;
   onDismiss: (event: MouseEvent) => void;
+  setScheduleUpdate?: (scheduleUpdate: () => void) => void;
 }
 
 export class PopperBlur extends React.Component<PopperBlurProps> {
@@ -27,14 +28,23 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
   }
 
   render() {
-    let { children, className, onDismiss, ...popperProps } = this.props;
+    let {
+      children,
+      className,
+      onDismiss,
+      setScheduleUpdate,
+      ...popperProps
+    } = this.props;
     return (
       <div
         className={classnames("sci-react-popover--popper", "blur", className)}
         ref={this.onRef}
       >
         <Popper {...popperProps}>
-          {({ ref, style, placement, arrowProps }) => {
+          {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
+            if (setScheduleUpdate) {
+              setScheduleUpdate(scheduleUpdate);
+            }
             return (
               <div
                 className="content"

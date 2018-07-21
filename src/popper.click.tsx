@@ -9,6 +9,7 @@ import { PopperOptions } from "popper.js";
 export interface PopperClickProps extends PopperOptions {
   className?: string;
   onDismiss: (event: React.SyntheticEvent<HTMLElement>) => void;
+  setScheduleUpdate?: (scheduleUpdate: () => void) => void;
 }
 
 export class PopperClick extends React.Component<PopperClickProps> {
@@ -16,35 +17,46 @@ export class PopperClick extends React.Component<PopperClickProps> {
     super(props);
   }
   render() {
-    let { children, className, onDismiss, ...popperProps } = this.props;
+    let {
+      children,
+      className,
+      onDismiss,
+      setScheduleUpdate,
+      ...popperProps
+    } = this.props;
     return (
       <div
         className={classnames("sci-react-popover--popper", "click", className)}
         onClick={this.onBackgroundClick}
       >
-        <Popper {...popperProps}>
-          {({ ref, style, placement, arrowProps }) => (
-            <div
-              className="content"
-              ref={ref}
-              style={style}
-              data-placement={placement}
-              onClick={this.onPopperClick}
-            >
-              {children}
-              <ReactResizeDetector
-                handleWidth
-                handleHeight
-                skipOnMount
-                onResize={this.onResize}
-              />
-              <span
-                ref={arrowProps.ref}
-                style={arrowProps.style}
-                className="popper__arrow"
-              />
-            </div>
-          )}
+        <Popper positionFixed={true} {...popperProps}>
+          {({ ref, style, scheduleUpdate, placement, arrowProps }) => {
+            if (setScheduleUpdate) {
+              setScheduleUpdate(scheduleUpdate);
+            }
+            return (
+              <div
+                className="content"
+                ref={ref}
+                style={style}
+                data-placement={placement}
+                onClick={this.onPopperClick}
+              >
+                {children}
+                <ReactResizeDetector
+                  handleWidth
+                  handleHeight
+                  skipOnMount
+                  onResize={this.onResize}
+                />
+                <span
+                  ref={arrowProps.ref}
+                  style={arrowProps.style}
+                  className="popper__arrow"
+                />
+              </div>
+            );
+          }}
         </Popper>
       </div>
     );

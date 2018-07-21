@@ -34,7 +34,7 @@ export interface PopoverState {
 
 export class Popover extends React.Component<PopoverProps, PopoverState> {
   private targetClickRef: null | TargetClick;
-  private popperRef: null | HTMLElement;
+  private scheduleUpdate: null | (() => void);
 
   constructor(props: PopoverProps) {
     super(props);
@@ -52,6 +52,10 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   public open() {
+    // There seems to be some weirdness with react 15 and react-popper not positioning after mount
+    if (this.scheduleUpdate) {
+      this.scheduleUpdate();
+    }
     this.setState({
       isOpen: true
     });
@@ -155,6 +159,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <PopperClick
             className={className}
+            setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
             onDismiss={() => {
               this.setState({
@@ -169,6 +174,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <PopperHover
             className={className}
+            setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
             onHoverChange={(isHovering: boolean) => {
               this.setState({
@@ -183,6 +189,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <PopperHover
             className={className}
+            setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
             onHoverChange={(isHovering: boolean) => {}}
           >
@@ -227,8 +234,9 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     }
   }
 
-  private setPopperRef = (ref: HTMLElement | null) => {
+  private setScheduleUpdate = (ref: null | (() => void)) => {
     if (ref != null) {
+      this.scheduleUpdate = ref;
     }
   };
 }
