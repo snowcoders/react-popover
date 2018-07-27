@@ -13,9 +13,12 @@ export interface PopperClickProps extends PopperOptions {
 }
 
 export class PopperClick extends React.Component<PopperClickProps> {
+  private scheduleUpdate: null | (() => void);
+
   constructor(props: PopperClickProps) {
     super(props);
   }
+
   render() {
     let {
       children,
@@ -31,9 +34,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
       >
         <Popper positionFixed={true} {...popperProps}>
           {({ ref, style, scheduleUpdate, placement, arrowProps }) => {
-            if (setScheduleUpdate) {
-              setScheduleUpdate(scheduleUpdate);
-            }
+            this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
@@ -42,13 +43,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
                 data-placement={placement}
                 onClick={this.onPopperClick}
               >
-                {children}
-                <ReactResizeDetector
-                  handleWidth
-                  handleHeight
-                  skipOnMount
-                  onResize={this.onResize}
-                />
+                {this.renderChildren()}
                 <span
                   ref={arrowProps.ref}
                   style={arrowProps.style}
@@ -62,8 +57,36 @@ export class PopperClick extends React.Component<PopperClickProps> {
     );
   }
 
+  setScheduleUpdate = (scheduleUpdate: () => void) => {
+    const { setScheduleUpdate } = this.props;
+    this.scheduleUpdate = scheduleUpdate;
+    if (setScheduleUpdate) {
+      setScheduleUpdate(scheduleUpdate);
+    }
+  };
+
+  private renderChildren() {
+    const { children } = this.props;
+    if (React.version.indexOf("15.") === 0) {
+      return children;
+    } else {
+      return (
+        <ReactResizeDetector
+          handleHeight
+          handleWidth
+          onResize={this.onResize}
+          skipOnMount
+        >
+          {children}
+        </ReactResizeDetector>
+      );
+    }
+  }
+
   private onResize = () => {
-    this.forceUpdate();
+    if (this.scheduleUpdate) {
+      this.scheduleUpdate();
+    }
   };
 
   private onPopperClick = (event: React.SyntheticEvent<HTMLElement>) => {

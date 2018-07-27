@@ -1,3 +1,5 @@
 describe("Component", () => {
-  it("success", () => {});
+  it("success", () => {
+    expect(true).toBe(true);
+  });
 });

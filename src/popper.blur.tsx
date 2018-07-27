@@ -14,9 +14,12 @@ export interface PopperBlurProps extends PopperOptions {
 
 export class PopperBlur extends React.Component<PopperBlurProps> {
   private contentRef: null | HTMLElement;
+  private scheduleUpdate: null | (() => void);
 
   constructor(props: PopperBlurProps) {
     super(props);
+    this.contentRef = null;
+    this.scheduleUpdate = null;
   }
 
   componentDidMount() {
@@ -42,9 +45,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
       >
         <Popper {...popperProps}>
           {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
-            if (setScheduleUpdate) {
-              setScheduleUpdate(scheduleUpdate);
-            }
+            this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
@@ -53,13 +54,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                 data-placement={placement}
                 onClick={this.onPopperClick}
               >
-                {children}
-                <ReactResizeDetector
-                  handleWidth
-                  handleHeight
-                  skipOnMount
-                  onResize={this.onResize}
-                />
+                {this.renderChildren()}
                 <span
                   ref={arrowProps.ref}
                   style={arrowProps.style}
@@ -73,12 +68,40 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
     );
   }
 
+  setScheduleUpdate = (scheduleUpdate: () => void) => {
+    const { setScheduleUpdate } = this.props;
+    this.scheduleUpdate = scheduleUpdate;
+    if (setScheduleUpdate) {
+      setScheduleUpdate(scheduleUpdate);
+    }
+  };
+
+  private renderChildren() {
+    const { children } = this.props;
+    if (React.version.indexOf("15.") === 0) {
+      return children;
+    } else {
+      return (
+        <ReactResizeDetector
+          handleHeight
+          handleWidth
+          onResize={this.onResize}
+          skipOnMount
+        >
+          {children}
+        </ReactResizeDetector>
+      );
+    }
+  }
+
   private onRef = (ref: HTMLElement | null) => {
     this.contentRef = ref;
   };
 
   private onResize = () => {
-    this.forceUpdate();
+    if (this.scheduleUpdate) {
+      this.scheduleUpdate();
+    }
   };
 
   private onDocumentMouseDown = (event: MouseEvent) => {
