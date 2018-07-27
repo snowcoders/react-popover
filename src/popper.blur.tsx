@@ -14,9 +14,12 @@ export interface PopperBlurProps extends PopperOptions {
 
 export class PopperBlur extends React.Component<PopperBlurProps> {
   private contentRef: null | HTMLElement;
+  private scheduleUpdate: null | (() => void);
 
   constructor(props: PopperBlurProps) {
     super(props);
+    this.contentRef = null;
+    this.scheduleUpdate = null;
   }
 
   componentDidMount() {
@@ -42,9 +45,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
       >
         <Popper {...popperProps}>
           {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
-            if (setScheduleUpdate) {
-              setScheduleUpdate(scheduleUpdate);
-            }
+            this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
@@ -66,6 +67,14 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
       </div>
     );
   }
+
+  setScheduleUpdate = (scheduleUpdate: () => void) => {
+    const { setScheduleUpdate } = this.props;
+    this.scheduleUpdate = scheduleUpdate;
+    if (setScheduleUpdate) {
+      setScheduleUpdate(scheduleUpdate);
+    }
+  };
 
   private renderChildren() {
     const { children } = this.props;
@@ -90,7 +99,9 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
   };
 
   private onResize = () => {
-    this.forceUpdate();
+    if (this.scheduleUpdate) {
+      this.scheduleUpdate();
+    }
   };
 
   private onDocumentMouseDown = (event: MouseEvent) => {

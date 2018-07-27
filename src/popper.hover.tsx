@@ -21,6 +21,8 @@ export class PopperHover extends React.Component<
   PopperHoverProps,
   PopperHoverState
 > {
+  private scheduleUpdate: null | (() => void);
+
   constructor(props: PopperHoverProps) {
     super(props);
     this.state = {
@@ -49,9 +51,7 @@ export class PopperHover extends React.Component<
       >
         <Popper {...popperProps}>
           {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
-            if (setScheduleUpdate) {
-              setScheduleUpdate(scheduleUpdate);
-            }
+            this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
@@ -73,6 +73,14 @@ export class PopperHover extends React.Component<
     );
   }
 
+  setScheduleUpdate = (scheduleUpdate: () => void) => {
+    const { setScheduleUpdate } = this.props;
+    this.scheduleUpdate = scheduleUpdate;
+    if (setScheduleUpdate) {
+      setScheduleUpdate(scheduleUpdate);
+    }
+  };
+
   private renderChildren() {
     const { children } = this.props;
     if (React.version.indexOf("15.") === 0) {
@@ -92,7 +100,9 @@ export class PopperHover extends React.Component<
   }
 
   private onResize = () => {
-    this.forceUpdate();
+    if (this.scheduleUpdate) {
+      this.scheduleUpdate();
+    }
   };
 
   private onPopperHover(isHovering: boolean) {
