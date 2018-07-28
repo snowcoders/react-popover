@@ -45,6 +45,9 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 
 # Change log
 
+- 1.1.3
+  - Fixed initial position of popper
+  - Disabled resize listener for React 15 due to complaints of errors
 - 1.1.0
   - TargetClick no longer nests `sci-react-unstyled-button` in side of a span. Thanks Jason!
   - Fixed Popper.Click not scrolling with page

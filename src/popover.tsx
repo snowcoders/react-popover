@@ -201,6 +201,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <PopperBlur
             className={className}
+            setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
             onDismiss={(event: MouseEvent) => {
               if (!this.state.isOpen) {
