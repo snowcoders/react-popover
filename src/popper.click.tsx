@@ -67,9 +67,7 @@ export class PopperClick extends React.Component<PopperClickProps> {
 
   private renderChildren() {
     const { children } = this.props;
-    if (React.version.indexOf("15.") === 0) {
-      return children;
-    } else {
+    {
       return (
         <ReactResizeDetector
           handleHeight

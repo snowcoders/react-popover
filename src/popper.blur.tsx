@@ -78,20 +78,16 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
 
   private renderChildren() {
     const { children } = this.props;
-    if (React.version.indexOf("15.") === 0) {
-      return children;
-    } else {
-      return (
-        <ReactResizeDetector
-          handleHeight
-          handleWidth
-          onResize={this.onResize}
-          skipOnMount
-        >
-          {children}
-        </ReactResizeDetector>
-      );
-    }
+    return (
+      <ReactResizeDetector
+        handleHeight
+        handleWidth
+        onResize={this.onResize}
+        skipOnMount
+      >
+        {children}
+      </ReactResizeDetector>
+    );
   }
 
   private onRef = (ref: HTMLElement | null) => {
