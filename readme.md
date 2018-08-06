@@ -45,6 +45,8 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 
 # Change log
 
+- 1.1.4-alpha.1
+  - Experimenting with webpack builds along with a smaller output file
 - 1.1.3
   - Fixed initial position of popper
   - Disabled resize listener for React 15 due to complaints of errors
