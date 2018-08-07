@@ -23,7 +23,6 @@
   "scripts": {
     "build": "npm run build-scss && npm run build-webpack",
     "build-scss": "node-sass src/styles.scss dist/styles.css",
-    "build-typescript": "tsc",
     "build-webpack": "webpack --mode production",
     "clean": "rimraf coverage dist",
     "cover": "nyc npm run test",
