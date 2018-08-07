@@ -59,7 +59,13 @@ export class PopperHover extends React.Component<
                 style={style}
                 data-placement={placement}
               >
-                {this.renderChildren()}
+                <ReactResizeDetector
+                  handleHeight
+                  handleWidth
+                  onResize={this.onResize}
+                  skipOnMount
+                />
+                {children}
                 <span
                   ref={arrowProps.ref}
                   style={arrowProps.style}
@@ -80,20 +86,6 @@ export class PopperHover extends React.Component<
       setScheduleUpdate(scheduleUpdate);
     }
   };
-
-  private renderChildren() {
-    const { children } = this.props;
-    return (
-      <ReactResizeDetector
-        handleHeight
-        handleWidth
-        onResize={this.onResize}
-        skipOnMount
-      >
-        {children}
-      </ReactResizeDetector>
-    );
-  }
 
   private onResize = () => {
     if (this.scheduleUpdate) {

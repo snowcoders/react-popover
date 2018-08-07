@@ -54,7 +54,13 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                 data-placement={placement}
                 onClick={this.onPopperClick}
               >
-                {this.renderChildren()}
+                <ReactResizeDetector
+                  handleHeight
+                  handleWidth
+                  onResize={this.onResize}
+                  skipOnMount
+                />
+                {children}
                 <span
                   ref={arrowProps.ref}
                   style={arrowProps.style}
@@ -75,20 +81,6 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
       setScheduleUpdate(scheduleUpdate);
     }
   };
-
-  private renderChildren() {
-    const { children } = this.props;
-    return (
-      <ReactResizeDetector
-        handleHeight
-        handleWidth
-        onResize={this.onResize}
-        skipOnMount
-      >
-        {children}
-      </ReactResizeDetector>
-    );
-  }
 
   private onRef = (ref: HTMLElement | null) => {
     this.contentRef = ref;
