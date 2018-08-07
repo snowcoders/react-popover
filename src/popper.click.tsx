@@ -67,18 +67,16 @@ export class PopperClick extends React.Component<PopperClickProps> {
 
   private renderChildren() {
     const { children } = this.props;
-    {
-      return (
-        <ReactResizeDetector
-          handleHeight
-          handleWidth
-          onResize={this.onResize}
-          skipOnMount
-        >
-          {children}
-        </ReactResizeDetector>
-      );
-    }
+    return (
+      <ReactResizeDetector
+        handleHeight
+        handleWidth
+        onResize={this.onResize}
+        skipOnMount
+      >
+        {children}
+      </ReactResizeDetector>
+    );
   }
 
   private onResize = () => {

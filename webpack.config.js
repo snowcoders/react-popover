@@ -56,7 +56,7 @@ const config /*: webpack.Configuration*/ = {
       amd: "react-resize-detector",
       commonjs: "react-resize-detector",
       commonjs2: "react-resize-detector",
-      root: "react-resize-detector"
+      root: "ResizeDetector"
     },
     classnames: {
       amd: "classnames",
