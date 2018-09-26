@@ -26,26 +26,9 @@
     "build-webpack": "webpack --mode production",
     "clean": "rimraf coverage dist",
     "cover": "nyc npm run test",
-    "precommit": "lint-staged",
     "prepare": "npm run clean && npm run build",
     "test": "npm run jest",
     "jest": "jest"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{json,css,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "sortier",
-      "git add"
-    ]
   },
   "peerDependencies": {
     "@snowcoders/react-unstyled-button": ">=1.2.2",
@@ -71,7 +54,7 @@
     "classnames": "^2.2.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "husky": "^0.14.3",
+    "husky": "^1.0.0",
     "jest": "^23.4.1",
     "jsdom": "^12.0.0",
     "lint-staged": "^7.2.0",
