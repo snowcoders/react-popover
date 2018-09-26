@@ -10,9 +10,7 @@ const config /*: webpack.Configuration*/ = {
     chunkFilename: "index.js",
     filename: "index.js",
     library: "@snowcoders/react-popover",
-    libraryTarget: "umd",
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "/dist/"
+    libraryTarget: "umd"
   },
 
   module: {
