@@ -2,6 +2,9 @@ module.exports = {
   collectCoverage: true,
   globals: {
     "ts-jest": {
+      diagnostics: {
+        ignoreCodes: [151001]
+      },
       tsConfig: "tsconfig.json"
     }
   },
