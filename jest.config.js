@@ -2,7 +2,7 @@ module.exports = {
   collectCoverage: true,
   globals: {
     "ts-jest": {
-      tsConfigFile: "tsconfig.json"
+      tsConfig: "tsconfig.json"
     }
   },
   moduleFileExtensions: ["ts", "tsx", "js"],
