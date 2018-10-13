@@ -16,6 +16,7 @@ export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover" | "none";
 
 export interface PopoverProps {
+  isOpen?: boolean;
   popperClassName?: string;
   popperContent?: React.ReactNode;
   popperOptions?: PopperOptions;
@@ -52,12 +53,22 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   public open() {
+    if (this.props.isOpen != null) {
+      console.warn(
+        "Popover's open() can only be used when popover control's it's open state, not when `open` is passed as a prop"
+      );
+    }
     this.setState({
       isOpen: true
     });
   }
 
   public close() {
+    if (this.props.isOpen != null) {
+      console.warn(
+        "Popover's open() can only be used when popover control's it's open state, not when `open` is passed as a prop"
+      );
+    }
     this.setState({
       isOpen: false
     });
@@ -151,7 +162,10 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     const { popperContent, popperOptions, popperType } = this.props;
 
     let className = this.props.popperClassName;
-    if (this.state.isOpen) {
+    if (
+      (this.props.isOpen != null && this.props.isOpen) ||
+      (this.props.isOpen == null && this.state.isOpen)
+    ) {
       className = classnames(className, "visible");
     }
 
