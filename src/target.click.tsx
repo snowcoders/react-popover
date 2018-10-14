@@ -7,7 +7,7 @@ import * as classnames from "classnames";
 
 export interface TargetClickProps {
   className?: string;
-  onClick?: (event: React.SyntheticEvent<HTMLElement>) => void;
+  onClick: (event: React.SyntheticEvent<HTMLElement>) => void;
 }
 
 export interface TargetClickState {}
@@ -41,8 +41,6 @@ export class TargetClick extends React.Component<
   }
 
   private onClick = (event: React.SyntheticEvent<HTMLElement>) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
+    this.props.onClick(event);
   };
 }
