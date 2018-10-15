@@ -259,21 +259,34 @@ describe("Popover", () => {
   });
 
   describe("Uncontrolled component methods", () => {
-    it("Opens on request", () => {
+    let spy: jest.SpyInstance<((isOpen: boolean) => void) | undefined>;
+    beforeEach(() => {
+      defaultProps = {
+        ...defaultProps,
+        isOpen: undefined,
+        onOpenChange: () => {}
+      };
+      spy = jest.spyOn(defaultProps, "onOpenChange");
+    });
+
+    it("Opens by method", () => {
       let wrapper = shallow(<Popover {...defaultProps} />);
 
       let popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(false);
+      expect(spy).not.toHaveBeenCalled();
 
       (wrapper.instance() as Popover).open();
 
       popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith(true);
     });
 
-    it("Closes on request", () => {
+    it("Opens by hover, closes on request", () => {
       let wrapper = shallow(<Popover {...defaultProps} />);
 
       let popperHover = wrapper.find(PopperHover);
@@ -285,12 +298,17 @@ describe("Popover", () => {
       popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith(true);
 
+      spy.mockReset();
       (wrapper.instance() as Popover).close();
 
       popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(false);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith(false);
     });
   });
 
@@ -322,7 +340,7 @@ describe("Popover", () => {
       popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(true);
-      expect(spy).toHaveBeenLastCalledWith(true);
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it("Closes by prop", () => {
@@ -341,7 +359,7 @@ describe("Popover", () => {
       popperHover = wrapper.find(PopperHover);
       expect(popperHover).toHaveLength(1);
       expect(popperHover.hasClass("visible")).toBe(false);
-      expect(spy).toHaveBeenLastCalledWith(false);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 });
