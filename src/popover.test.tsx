@@ -293,4 +293,55 @@ describe("Popover", () => {
       expect(popperHover.hasClass("visible")).toBe(false);
     });
   });
+
+  describe("Controlled component methods", () => {
+    let spy: jest.SpyInstance<((isOpen: boolean) => void) | undefined>;
+    beforeEach(() => {
+      defaultProps = {
+        ...defaultProps,
+        isOpen: false,
+        onOpenChange: () => {}
+      };
+      spy = jest.spyOn(defaultProps, "onOpenChange");
+    });
+
+    it("Opens by prop", () => {
+      let wrapper = shallow(<Popover {...defaultProps} isOpen={false} />, {
+        lifecycleExperimental: true
+      });
+
+      let popperHover = wrapper.find(PopperHover);
+      expect(popperHover).toHaveLength(1);
+      expect(popperHover.hasClass("visible")).toBe(false);
+      expect(spy).not.toHaveBeenCalled();
+
+      wrapper.setProps({
+        isOpen: true
+      });
+
+      popperHover = wrapper.find(PopperHover);
+      expect(popperHover).toHaveLength(1);
+      expect(popperHover.hasClass("visible")).toBe(true);
+      expect(spy).toHaveBeenLastCalledWith(true);
+    });
+
+    it("Closes by prop", () => {
+      let wrapper = shallow(<Popover {...defaultProps} isOpen={true} />);
+
+      let popperHover = wrapper.find(PopperHover);
+      expect(popperHover).toHaveLength(1);
+      expect(popperHover.hasClass("visible")).toBe(true);
+      expect(spy).not.toHaveBeenCalled();
+
+      wrapper.setProps({
+        isOpen: false
+      });
+      wrapper.update();
+
+      popperHover = wrapper.find(PopperHover);
+      expect(popperHover).toHaveLength(1);
+      expect(popperHover.hasClass("visible")).toBe(false);
+      expect(spy).toHaveBeenLastCalledWith(false);
+    });
+  });
 });

@@ -80,11 +80,14 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
       this.scheduleUpdate();
     }
 
-    if (
-      this.props.onOpenChange != null &&
-      this.state.isOpen !== prevState.isOpen
-    ) {
-      this.props.onOpenChange(this.state.isOpen);
+    const { onOpenChange } = this.props;
+    if (onOpenChange != null) {
+      if (this.props.isOpen !== prevProps.isOpen) {
+        onOpenChange(this.props.isOpen || false);
+      }
+      if (this.state.isOpen !== prevState.isOpen) {
+        onOpenChange(this.state.isOpen);
+      }
     }
   }
 
