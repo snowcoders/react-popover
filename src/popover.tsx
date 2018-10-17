@@ -16,6 +16,8 @@ export type TargetType = "click" | "hover";
 export type PopperType = "blur" | "click" | "hover" | "none";
 
 export interface PopoverProps {
+  /// Undefined if uncontrolled. If controlled, true for open, false for closed
+  isOpen?: boolean;
   popperClassName?: string;
   popperContent?: React.ReactNode;
   popperOptions?: PopperOptions;
@@ -25,6 +27,8 @@ export interface PopoverProps {
   targetType: TargetType;
   wrapperElementProps?: any;
   wrapperElementType?: string;
+  /// If uncontrolled - a callback handler to notify when to change the state
+  /// If controlled - a callback handler to notify when isOpen should be changed
   onOpenChange?: (isOpen: boolean) => void;
 }
 
@@ -52,15 +56,21 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   public open() {
-    this.setState({
-      isOpen: true
-    });
+    if (this.props.isOpen != null) {
+      console.warn(
+        "Popover's open() can only be used when popover control's it's open state, not when `isOpen` is passed as a prop"
+      );
+    }
+    this.onChangeOpen(true);
   }
 
   public close() {
-    this.setState({
-      isOpen: false
-    });
+    if (this.props.isOpen != null) {
+      console.warn(
+        "Popover's open() can only be used when popover control's it's open state, not when `isOpen` is passed as a prop"
+      );
+    }
+    this.onChangeOpen(false);
   }
 
   componentDidUpdate(prevProps: PopoverProps, prevState: PopoverState) {
@@ -69,11 +79,11 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
       this.scheduleUpdate();
     }
 
-    if (
-      this.props.onOpenChange != null &&
-      this.state.isOpen !== prevState.isOpen
-    ) {
-      this.props.onOpenChange(this.state.isOpen);
+    const { onOpenChange } = this.props;
+    if (onOpenChange != null) {
+      if (this.props.isOpen == null && this.state.isOpen !== prevState.isOpen) {
+        onOpenChange(this.state.isOpen);
+      }
     }
   }
 
@@ -99,23 +109,14 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
   }
 
   private renderTarget() {
-    const {
-      popperType,
-      targetClassName,
-      targetContent,
-      targetType
-    } = this.props;
+    const { targetClassName, targetContent, targetType } = this.props;
 
     switch (targetType) {
       case "click":
         return (
           <TargetClick
             className={targetClassName}
-            onClick={() => {
-              this.setState({
-                isOpen: !this.state.isOpen
-              });
-            }}
+            onClick={this.onTargetClickChange}
             ref={ref => {
               this.targetClickRef = ref;
             }}
@@ -127,17 +128,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <TargetHover
             className={targetClassName}
-            onHoverChange={(isHovering: boolean) => {
-              if (
-                popperType === "hover" ||
-                popperType === "none" ||
-                isHovering
-              ) {
-                this.setState({
-                  isOpen: isHovering
-                });
-              }
-            }}
+            onHoverChange={this.onTargetHoverChange}
           >
             {targetContent}
           </TargetHover>
@@ -147,26 +138,52 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     }
   }
 
+  private onTargetHoverChange = (isHovering: boolean) => {
+    const { popperType } = this.props;
+
+    if (popperType === "hover" || popperType === "none" || isHovering) {
+      this.onChangeOpen(isHovering);
+    }
+  };
+
+  private onTargetClickChange = () => {
+    if (this.props.isOpen == null) {
+      this.onChangeOpen(!this.state.isOpen);
+    } else {
+      this.onChangeOpen(!this.props.isOpen);
+    }
+  };
+
   private renderPopper() {
     const { popperContent, popperOptions, popperType } = this.props;
 
     let className = this.props.popperClassName;
-    if (this.state.isOpen) {
+    if (
+      (this.props.isOpen != null && this.props.isOpen) ||
+      (this.props.isOpen == null && this.state.isOpen)
+    ) {
       className = classnames(className, "visible");
     }
 
     switch (popperType) {
+      case "blur":
+        return (
+          <PopperBlur
+            className={className}
+            setScheduleUpdate={this.setScheduleUpdate}
+            {...popperOptions}
+            onDismiss={this.onPopperBlurDismiss}
+          >
+            {popperContent}
+          </PopperBlur>
+        );
       case "click":
         return (
           <PopperClick
             className={className}
             setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
-            onDismiss={() => {
-              this.setState({
-                isOpen: false
-              });
-            }}
+            onDismiss={this.onPopperClickDismiss}
           >
             {popperContent}
           </PopperClick>
@@ -177,11 +194,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
             className={className}
             setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
-            onHoverChange={(isHovering: boolean) => {
-              this.setState({
-                isOpen: isHovering
-              });
-            }}
+            onHoverChange={this.onChangeOpen}
           >
             {popperContent}
           </PopperHover>
@@ -192,49 +205,59 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
             className={className}
             setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
-            onHoverChange={(isHovering: boolean) => {}}
+            onHoverChange={() => {}}
           >
             {popperContent}
           </PopperHover>
-        );
-      case "blur":
-        return (
-          <PopperBlur
-            className={className}
-            setScheduleUpdate={this.setScheduleUpdate}
-            {...popperOptions}
-            onDismiss={(event: MouseEvent) => {
-              if (!this.state.isOpen) {
-                return;
-              }
-              if (this.targetClickRef != null) {
-                let target = ReactDOM.findDOMNode(this.targetClickRef);
-                let isTargetOrChild = false;
-                let sourceElement: Element | null = event.srcElement;
-                while (sourceElement != null) {
-                  if (target == sourceElement) {
-                    isTargetOrChild = true;
-                    break;
-                  }
-                  sourceElement = sourceElement.parentElement;
-                }
-
-                if (isTargetOrChild) {
-                  return;
-                }
-              }
-              this.setState({
-                isOpen: false
-              });
-            }}
-          >
-            {popperContent}
-          </PopperBlur>
         );
       default:
         throw new Error("Target type must be either click or hover");
     }
   }
+
+  private onPopperBlurDismiss = (event: MouseEvent) => {
+    if (
+      (this.state.isOpen === false && this.props.isOpen == null) ||
+      this.props.isOpen === false
+    ) {
+      return;
+    }
+    if (this.targetClickRef != null) {
+      let target = ReactDOM.findDOMNode(this.targetClickRef);
+      let isTargetOrChild = false;
+      let sourceElement: null | Element = event.srcElement;
+      while (sourceElement != null) {
+        if (target == sourceElement) {
+          isTargetOrChild = true;
+          break;
+        }
+        sourceElement = sourceElement.parentElement;
+      }
+
+      if (isTargetOrChild) {
+        return;
+      }
+    }
+
+    this.onPopperClickDismiss();
+  };
+
+  private onPopperClickDismiss = () => {
+    this.onChangeOpen(false);
+  };
+
+  private onChangeOpen = (newIsOpen: boolean) => {
+    const { isOpen, onOpenChange } = this.props;
+    if (isOpen != null && onOpenChange != null) {
+      if (isOpen != newIsOpen) {
+        onOpenChange(newIsOpen);
+      }
+    } else if (this.state.isOpen != newIsOpen) {
+      this.setState({
+        isOpen: newIsOpen
+      });
+    }
+  };
 
   private setScheduleUpdate = (ref: null | (() => void)) => {
     if (ref != null) {
