@@ -116,7 +116,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
         return (
           <TargetClick
             className={targetClassName}
-            onClick={this.onReverseState}
+            onClick={this.onTargetClickChange}
             ref={ref => {
               this.targetClickRef = ref;
             }}
@@ -143,6 +143,14 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
 
     if (popperType === "hover" || popperType === "none" || isHovering) {
       this.onChangeOpen(isHovering);
+    }
+  };
+
+  private onTargetClickChange = () => {
+    if (this.props.isOpen == null) {
+      this.onChangeOpen(!this.state.isOpen);
+    } else {
+      this.onChangeOpen(!this.props.isOpen);
     }
   };
 
@@ -175,7 +183,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
             className={className}
             setScheduleUpdate={this.setScheduleUpdate}
             {...popperOptions}
-            onDismiss={this.onClose}
+            onDismiss={this.onPopperClickDismiss}
           >
             {popperContent}
           </PopperClick>
@@ -231,19 +239,11 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
       }
     }
 
-    this.onClose();
+    this.onPopperClickDismiss();
   };
 
-  private onClose = () => {
+  private onPopperClickDismiss = () => {
     this.onChangeOpen(false);
-  };
-
-  private onReverseState = () => {
-    if (this.props.isOpen == null) {
-      this.onChangeOpen(!this.state.isOpen);
-    } else {
-      this.onChangeOpen(!this.props.isOpen);
-    }
   };
 
   private onChangeOpen = (newIsOpen: boolean) => {

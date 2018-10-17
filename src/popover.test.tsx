@@ -57,56 +57,56 @@ describe("Popover", () => {
   describe("Open/Close scenarios", () => {
     let targetHoverState: boolean = false;
     let targetInfos: Array<{
-      targetType: TargetType;
+      type: TargetType;
       component: any;
-      activateTarget: (component: any) => void;
+      activate: (component: any) => void;
     }> = [
       {
         component: TargetClick,
-        targetType: "click",
-        activateTarget: target => {
+        type: "click",
+        activate: target => {
           target.props().onClick({} as any);
         }
       },
       {
         component: TargetHover,
-        targetType: "hover",
-        activateTarget: target => {
+        type: "hover",
+        activate: target => {
           targetHoverState = !targetHoverState;
           target.props().onHoverChange(targetHoverState);
         }
       }
     ];
     let popperInfos: Array<{
-      popperType: PopperType;
+      type: PopperType;
       component: any;
-      activateTarget: (component: any) => void;
+      activate: (component: any) => void;
     }> = [
       {
         component: PopperHover,
-        popperType: "hover",
-        activateTarget: target => {
+        type: "hover",
+        activate: target => {
           target.props().onHoverChange(false);
         }
       },
       {
         component: PopperHover,
-        popperType: "none",
-        activateTarget: target => {
+        type: "none",
+        activate: target => {
           target.props().onHoverChange(false);
         }
       },
       {
         component: PopperClick,
-        popperType: "click",
-        activateTarget: target => {
+        type: "click",
+        activate: target => {
           target.props().onDismiss();
         }
       },
       {
         component: PopperBlur,
-        popperType: "blur",
-        activateTarget: target => {
+        type: "blur",
+        activate: target => {
           target.props().onDismiss({} as any);
         }
       }
@@ -115,15 +115,15 @@ describe("Popover", () => {
     describe("Target events", () => {
       for (let targetType of targetInfos) {
         for (let popperType of popperInfos) {
-          describe(`TargetType: ${targetType.targetType}, PopperType: ${
-            popperType.popperType
+          describe(`TargetType: ${targetType.type}, PopperType: ${
+            popperType.type
           }`, () => {
             beforeEach(() => {
               targetHoverState = false;
               defaultProps = {
                 ...defaultProps,
-                popperType: popperType.popperType,
-                targetType: targetType.targetType
+                popperType: popperType.type,
+                targetType: targetType.type
               };
             });
 
@@ -138,26 +138,25 @@ describe("Popover", () => {
             it("Renders open/closed when clicked", () => {
               let wrapper = shallow(<Popover {...defaultProps} />);
 
-              // Click the target and open it
-              let targetClick = wrapper.find(targetType.component);
-              targetType.activateTarget(targetClick);
+              // Activate the target and open it
+              let target = wrapper.find(targetType.component);
+              targetType.activate(target);
 
               // Verify the popper is open
               let popper = wrapper.find(popperType.component);
               expect(popper).toHaveLength(1);
               expect(popper.hasClass("visible")).toBe(true);
 
-              // Now click the target again to close it
-              targetClick = wrapper.find(targetType.component);
-              targetType.activateTarget(targetClick);
+              // Now activate the target again to close it
+              target = wrapper.find(targetType.component);
+              targetType.activate(target);
 
               // Verify the popper is in expected state
               popper = wrapper.find(popperType.component);
               expect(popper).toHaveLength(1);
               if (
-                targetType.targetType === "hover" &&
-                (popperType.popperType === "click" ||
-                  popperType.popperType === "blur")
+                targetType.type === "hover" &&
+                (popperType.type === "click" || popperType.type === "blur")
               ) {
                 // For these types, the popper should open by the target but only the popper can close it, not the target
                 expect(popper.hasClass("visible")).toBe(true);
@@ -174,15 +173,15 @@ describe("Popover", () => {
     describe("Popper events", () => {
       for (let targetType of targetInfos) {
         for (let popperType of popperInfos) {
-          describe(`TargetType: ${targetType.targetType}, PopperType: ${
-            popperType.popperType
+          describe(`TargetType: ${targetType.type}, PopperType: ${
+            popperType.type
           }`, () => {
             beforeEach(() => {
               targetHoverState = false;
               defaultProps = {
                 ...defaultProps,
-                popperType: popperType.popperType,
-                targetType: targetType.targetType
+                popperType: popperType.type,
+                targetType: targetType.type
               };
             });
 
@@ -197,23 +196,24 @@ describe("Popover", () => {
             it("Closes when requested", () => {
               let wrapper = shallow(<Popover {...defaultProps} />);
 
-              // Click the target and open it
-              let targetClick = wrapper.find(targetType.component);
-              targetType.activateTarget(targetClick);
+              // Actiate the target and open it
+              let target = wrapper.find(targetType.component);
+              targetType.activate(target);
 
               // Verify the popper is open
               let popper = wrapper.find(popperType.component);
               expect(popper).toHaveLength(1);
               expect(popper.hasClass("visible")).toBe(true);
 
-              // Now activate the close scenario to close the popper
+              // Now activate the popper to close it
               popper = wrapper.find(popperType.component);
-              popperType.activateTarget(popper);
+              popperType.activate(popper);
 
-              // Verify the popper is closed
+              // Verify the popper is in expected state
               popper = wrapper.find(popperType.component);
               expect(popper).toHaveLength(1);
-              if (popperType.popperType === "none") {
+              if (popperType.type === "none") {
+                // In the none case, the popper's callback should have no affect
                 expect(popper.hasClass("visible")).toBe(true);
               } else {
                 expect(popper.hasClass("visible")).toBe(false);
@@ -239,16 +239,16 @@ describe("Popover", () => {
     it("Opens by method", () => {
       let wrapper = shallow(<Popover {...defaultProps} />);
 
-      let popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(false);
+      let popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(false);
       expect(spy).not.toHaveBeenCalled();
 
       (wrapper.instance() as Popover).open();
 
-      popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(true);
+      popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(true);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenLastCalledWith(true);
     });
@@ -256,24 +256,24 @@ describe("Popover", () => {
     it("Opens by hover, closes on request", () => {
       let wrapper = shallow(<Popover {...defaultProps} />);
 
-      let popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(false);
+      let popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(false);
 
-      popperHover.props().onHoverChange(true);
+      popper.props().onHoverChange(true);
 
-      popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(true);
+      popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(true);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenLastCalledWith(true);
 
       spy.mockReset();
       (wrapper.instance() as Popover).close();
 
-      popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(false);
+      popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(false);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenLastCalledWith(false);
     });
@@ -295,27 +295,27 @@ describe("Popover", () => {
         lifecycleExperimental: true
       });
 
-      let popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(false);
+      let popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(false);
       expect(spy).not.toHaveBeenCalled();
 
       wrapper.setProps({
         isOpen: true
       });
 
-      popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(true);
+      popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(true);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it("Closes by prop", () => {
       let wrapper = shallow(<Popover {...defaultProps} isOpen={true} />);
 
-      let popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(true);
+      let popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(true);
       expect(spy).not.toHaveBeenCalled();
 
       wrapper.setProps({
@@ -323,9 +323,9 @@ describe("Popover", () => {
       });
       wrapper.update();
 
-      popperHover = wrapper.find(PopperHover);
-      expect(popperHover).toHaveLength(1);
-      expect(popperHover.hasClass("visible")).toBe(false);
+      popper = wrapper.find(PopperHover);
+      expect(popper).toHaveLength(1);
+      expect(popper.hasClass("visible")).toBe(false);
       expect(spy).not.toHaveBeenCalled();
     });
   });
