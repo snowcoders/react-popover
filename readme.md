@@ -33,6 +33,7 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 
 ```
 <Popover
+  isOpen={false}
   popperContent={"I'm inside the popover"}
   popperOptions={{
       placement: "bottom"
@@ -45,6 +46,8 @@ To see a live example, go to our demo site https://snowcoders.github.io/react-ui
 
 # Change log
 
+- 1.2.0
+  - Added an isOpen prop to support a controlled component
 - 1.1.4
   - Reduced javascript output from ~20k to ~10k by moving to webpack
   - Enabled resize listener for React 15

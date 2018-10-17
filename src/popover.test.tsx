@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Popover, PopoverProps } from "./popover";
+import { Popover, PopoverProps, PopperType, TargetType } from "./popover";
 import { PopperHover } from "./popper.hover";
 import { TargetHover } from "./target.hover";
 
@@ -182,81 +182,92 @@ describe("Popover", () => {
     });
   });
 
-  describe("Target hover type", () => {
-    beforeEach(() => {
-      defaultProps = {
-        ...defaultProps,
-        popperType: "hover",
-        targetType: "hover"
-      };
+  let targetHoverState: boolean = false;
+  let targetInfos: Array<{
+    targetType: TargetType;
+    component: any;
+    activateTarget: (component: any) => void;
+  }> = [
+    {
+      component: TargetClick,
+      targetType: "click",
+      activateTarget: target => {
+        target.props().onClick({} as any);
+      }
+    },
+    {
+      component: TargetHover,
+      targetType: "hover",
+      activateTarget: target => {
+        targetHoverState = !targetHoverState;
+        target.props().onHoverChange(targetHoverState);
+      }
+    }
+  ];
+  let popperInfos: Array<{
+    popperType: PopperType;
+    component: any;
+  }> = [
+    {
+      component: PopperHover,
+      popperType: "hover"
+    },
+    {
+      component: PopperHover,
+      popperType: "none"
+    },
+    {
+      component: PopperClick,
+      popperType: "click"
+    },
+    {
+      component: PopperBlur,
+      popperType: "blur"
+    }
+  ];
+  for (let targetType of targetInfos) {
+    describe(`TargetType: ${targetType.targetType}`, () => {
+      for (let popperType of popperInfos) {
+        describe(`PopperType: ${popperType.popperType}`, () => {
+          beforeEach(() => {
+            defaultProps = {
+              ...defaultProps,
+              popperType: popperType.popperType,
+              targetType: targetType.targetType
+            };
+          });
+
+          it("Renders closed by default", () => {
+            let wrapper = shallow(<Popover {...defaultProps} />);
+
+            let popper = wrapper.find(popperType.component);
+            expect(popper).toHaveLength(1);
+            expect(popper.hasClass("visible")).toBe(false);
+          });
+
+          it("Renders open/closed when clicked", () => {
+            let wrapper = shallow(<Popover {...defaultProps} />);
+
+            // Click the target and open it
+            let targetClick = wrapper.find(targetType.component);
+            targetType.activateTarget(targetClick);
+
+            // Verify the popper is open
+            let popper = wrapper.find(popperType.component);
+            expect(popper).toHaveLength(1);
+            expect(popper.hasClass("visible")).toBe(true);
+
+            // Now click the target again to close it
+            targetClick = wrapper.find(targetType.component);
+            targetType.activateTarget(targetClick);
+            popper = wrapper.find(popperType.component);
+            expect(popper).toHaveLength(1);
+            expect(popper.hasClass("visible")).toBe(false);
+          });
+        });
+      }
     });
-
-    it("Renders closed by default", () => {
-      let wrapper = shallow(<Popover {...defaultProps} />);
-
-      let popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(false);
-    });
-
-    it("Renders open/closed when clicked", () => {
-      let wrapper = shallow(<Popover {...defaultProps} />);
-
-      // Click the target and open it
-      let targetHover = wrapper.find(TargetHover);
-      targetHover.props().onHoverChange(true);
-
-      // Verify the popper is open
-      let popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(true);
-
-      // Now click the target again to close it
-      targetHover = wrapper.find(TargetHover);
-      targetHover.props().onHoverChange(false);
-      popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(false);
-    });
-  });
-
-  describe("Target click type", () => {
-    beforeEach(() => {
-      defaultProps = {
-        ...defaultProps,
-        popperType: "hover",
-        targetType: "click"
-      };
-    });
-
-    it("Renders closed by default", () => {
-      let wrapper = shallow(<Popover {...defaultProps} />);
-
-      let popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(false);
-    });
-
-    it("Renders open/closed when clicked", () => {
-      let wrapper = shallow(<Popover {...defaultProps} />);
-
-      // Click the target and open it
-      let targetClick = wrapper.find(TargetClick);
-      targetClick.props().onClick({} as any);
-
-      // Verify the popper is open
-      let popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(true);
-
-      // Now click the target again to close it
-      targetClick = wrapper.find(TargetClick);
-      targetClick.props().onClick({} as any);
-      popper = wrapper.find(PopperHover);
-      expect(popper).toHaveLength(1);
-      expect(popper.hasClass("visible")).toBe(false);
-    });
-  });
+  }
 
   describe("Uncontrolled component methods", () => {
     let spy: jest.SpyInstance<((isOpen: boolean) => void) | undefined>;
