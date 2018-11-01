@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@snowcoders/react-unstyled-button": "1.2.2",
-    "@snowcoders/sortier": "2.1.13",
+    "@snowcoders/sortier": "2.1.14",
     "@types/classnames": "2.2.6",
     "@types/enzyme": "3.1.14",
     "@types/enzyme-adapter-react-15": "1.0.3",
