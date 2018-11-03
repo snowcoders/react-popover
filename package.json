@@ -72,6 +72,6 @@
     "tslib": "1.9.3",
     "typescript": "3.1.6",
     "webpack": "4.24.0",
-    "webpack-command": "0.4.1"
+    "webpack-command": "0.4.2"
   }
 }
