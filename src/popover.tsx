@@ -73,9 +73,19 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     this.onChangeOpen(false);
   }
 
+  public update() {
+    if (this.scheduleUpdate != null) {
+      this.scheduleUpdate();
+    }
+  }
+
   componentDidUpdate(prevProps: PopoverProps, prevState: PopoverState) {
     // There seems to be some weirdness with react 15 and react-popper not positioning after mount
-    if (this.state.isOpen && !prevState.isOpen && this.scheduleUpdate != null) {
+    if (
+      this.scheduleUpdate != null &&
+      ((this.state.isOpen && !prevState.isOpen) ||
+        (this.props.isOpen && !prevProps.isOpen))
+    ) {
       this.scheduleUpdate();
     }
 
