@@ -8,70 +8,72 @@
 
 /*
 // This is a full, nested css sample to start from
-$contentBackgroundColor: #FFC107;
-$contentBorderRadius: 10px;
-$contentPadding: 15px;
-$textColor: #000000;
-$arrowColor: $contentBackgroundColor;
-$arrowSize: 10px;
+.globally-unique-name {
+    $contentBackgroundColor: #FFC107;
+    $contentBorderRadius: 10px;
+    $contentPadding: 15px;
+    $textColor: #000000;
+    $arrowColor: $contentBackgroundColor;
+    $arrowSize: 10px;
 
-> .sci-react-popover--target {
-    color: green;
-}
-
-> .sci-react-popover--popper {
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.4s, visibility 0.4s;
-
-    &.visible {
-        visibility: visible;
-        opacity: 1;
+    > .target-class-name {
+        color: green;
     }
-    > .content {
-        background: $contentBackgroundColor;
-        color: $textColor;
-        padding: $contentPadding;
-        text-align: center;
-        border-radius: $contentBorderRadius;
 
-        > .popper__arrow {
-            position: absolute;
-            border-color: transparent;
-            border-style: solid;
-            border-width: $arrowSize;
+    > .popper-class-name {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.4s, visibility 0.4s;
+
+        &.visible {
+            visibility: visible;
+            opacity: 1;
         }
-        
-        &[data-placement="top"] {
-            margin-bottom: $arrowSize;
+        .globally-unique-name__popper-content-classname {
+            background: $contentBackgroundColor;
+            color: $textColor;
+            padding: $contentPadding;
+            text-align: center;
+            border-radius: $contentBorderRadius;
+
             > .popper__arrow {
-                border-bottom-width: 0px;
-                border-top-color: $arrowColor;
-                bottom: -$arrowSize;
+                position: absolute;
+                border-color: transparent;
+                border-style: solid;
+                border-width: $arrowSize;
             }
-        }
-        &[data-placement="bottom"] {
-            margin-top: $arrowSize;
-            > .popper__arrow {
-                border-top-width: 0px;
-                border-bottom-color: $arrowColor;
-                top: -$arrowSize;
+            
+            &[data-placement="top"] {
+                margin-bottom: $arrowSize;
+                > .popper__arrow {
+                    border-bottom-width: 0px;
+                    border-top-color: $arrowColor;
+                    bottom: -$arrowSize;
+                }
             }
-        }
-        &[data-placement="right"] {
-            margin-left: $arrowSize;
-            > .popper__arrow {
-                border-left-width: 0px;
-                border-right-color: $arrowColor;
-                left: -$arrowSize;
+            &[data-placement="bottom"] {
+                margin-top: $arrowSize;
+                > .popper__arrow {
+                    border-top-width: 0px;
+                    border-bottom-color: $arrowColor;
+                    top: -$arrowSize;
+                }
             }
-        }
-        &[data-placement="left"] {
-            margin-right: $arrowSize;
-            > .popper__arrow {
-                border-right-width: 0px;
-                border-left-color: $arrowColor;
-                right: -$arrowSize;
+            &[data-placement="right"] {
+                margin-left: $arrowSize;
+                > .popper__arrow {
+                    border-left-width: 0px;
+                    border-right-color: $arrowColor;
+                    left: -$arrowSize;
+                }
+            }
+            &[data-placement="left"] {
+                margin-right: $arrowSize;
+                > .popper__arrow {
+                    border-right-width: 0px;
+                    border-left-color: $arrowColor;
+                    right: -$arrowSize;
+                }
             }
         }
     }
