@@ -1,5 +1,7 @@
 ### Unreleased
 
+### 1.2.1
+
 - Added Popover.update() to allow for force update after animations
 - Fixed bug regarding stateless popover's not repositioning when reopened
 
