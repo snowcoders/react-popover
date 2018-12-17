@@ -3,7 +3,7 @@
   "description": "Wrapper around react-popper that handles ~95% of popper scenarios",
   "devDependencies": {
     "@snowcoders/react-unstyled-button": "1.2.2",
-    "@snowcoders/renovate-config": "^0.2.0",
+    "@snowcoders/renovate-config": "0.2.0",
     "@snowcoders/sortier": "2.3.2",
     "@types/classnames": "2.2.6",
     "@types/enzyme-adapter-react-15": "1.0.3",
@@ -17,7 +17,7 @@
     "classnames": "2.2.6",
     "enzyme-adapter-react-16": "1.7.1",
     "enzyme": "3.8.0",
-    "husky": "^1.2.1",
+    "husky": "1.2.1",
     "jest": "23.6.0",
     "jsdom": "13.1.0",
     "lint-staged": "8.1.0",
