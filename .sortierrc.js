@@ -1,3 +1,3 @@
 var configs = require("@snowcoders/renovate-config");
 
-module.exports = configs.jest;
+module.exports = configs.sortier;
