@@ -35,7 +35,7 @@
     "tslib": "1.9.3",
     "typescript": "3.2.4",
     "webpack-command": "0.4.2",
-    "webpack": "4.28.4"
+    "webpack": "4.29.0"
   },
   "keywords": [
     "Popper",
