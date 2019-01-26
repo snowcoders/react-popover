@@ -2,7 +2,7 @@
   "author": "Snowcoders",
   "description": "Wrapper around react-popper that handles ~95% of popper scenarios",
   "devDependencies": {
-    "@snowcoders/react-unstyled-button": "1.2.2",
+    "@snowcoders/react-unstyled-button": "1.2.3",
     "@snowcoders/renovate-config": "0.2.1",
     "@snowcoders/sortier": "2.5.1",
     "@types/classnames": "2.2.7",
