@@ -226,7 +226,7 @@ describe("Popover", () => {
   });
 
   describe("Uncontrolled component methods", () => {
-    let spy: jest.SpyInstance<((isOpen: boolean) => void) | undefined>;
+    let spy: jest.SpyInstance<void, [boolean]>;
     beforeEach(() => {
       defaultProps = {
         ...defaultProps,
@@ -280,7 +280,7 @@ describe("Popover", () => {
   });
 
   describe("Controlled component methods", () => {
-    let spy: jest.SpyInstance<((isOpen: boolean) => void) | undefined>;
+    let spy: jest.SpyInstance<void, [boolean]>;
     beforeEach(() => {
       defaultProps = {
         ...defaultProps,
