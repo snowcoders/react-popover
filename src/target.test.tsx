@@ -22,12 +22,12 @@ function shallowTargetHover() {
 describe("Target", () => {
   for (let shallowFactory of [
     {
-      name: "Click",
-      factory: shallowTargetClick
+      factory: shallowTargetClick,
+      name: "Click"
     },
     {
-      name: "Hover",
-      factory: shallowTargetHover
+      factory: shallowTargetHover,
+      name: "Hover"
     }
   ]) {
     describe(shallowFactory.name, () => {

@@ -33,15 +33,15 @@ export class PopperClick extends React.Component<PopperClickProps> {
         onClick={this.onBackgroundClick}
       >
         <Popper positionFixed={true} {...popperProps}>
-          {({ ref, style, scheduleUpdate, placement, arrowProps }) => {
+          {({ arrowProps, placement, ref, scheduleUpdate, style }) => {
             this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
-                ref={ref}
-                style={style}
                 data-placement={placement}
                 onClick={this.onPopperClick}
+                ref={ref}
+                style={style}
               >
                 <ReactResizeDetector
                   handleHeight
@@ -51,9 +51,9 @@ export class PopperClick extends React.Component<PopperClickProps> {
                 />
                 {children}
                 <span
+                  className="popper__arrow"
                   ref={arrowProps.ref}
                   style={arrowProps.style}
-                  className="popper__arrow"
                 />
               </div>
             );

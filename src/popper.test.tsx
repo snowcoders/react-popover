@@ -26,16 +26,16 @@ function shallowPopperHover() {
 describe("Popper", () => {
   for (let shallowFactory of [
     {
-      name: "Blur",
-      factory: shallowPopperBlur
+      factory: shallowPopperBlur,
+      name: "Blur"
     },
     {
-      name: "Click",
-      factory: shallowPopperClick
+      factory: shallowPopperClick,
+      name: "Click"
     },
     {
-      name: "Hover",
-      factory: shallowPopperHover
+      factory: shallowPopperHover,
+      name: "Hover"
     }
   ]) {
     describe(shallowFactory.name, () => {
