@@ -235,7 +235,7 @@ export class Popover extends React.Component<PopoverProps, PopoverState> {
     if (this.targetClickRef != null) {
       let target = ReactDOM.findDOMNode(this.targetClickRef);
       let isTargetOrChild = false;
-      let sourceElement: null | Element = event.srcElement;
+      let sourceElement: null | any = event.srcElement;
       while (sourceElement != null) {
         if (target == sourceElement) {
           isTargetOrChild = true;

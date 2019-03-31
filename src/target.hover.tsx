@@ -1,8 +1,7 @@
 import * as React from "react";
 
-import { Reference } from "react-popper";
-
 import * as classnames from "classnames";
+import { Reference } from "react-popper";
 
 export interface TargetHoverProps {
   className?: string;
@@ -26,25 +25,25 @@ export class TargetHover extends React.Component<
       <Reference>
         {({ ref }) => (
           <span
-            ref={ref}
             className={classnames(
               "sci-react-popover--target",
               "hover",
               this.props.className
             )}
-            tabIndex={0}
-            onMouseOver={() => {
-              this.onHoverChange(true);
-            }}
-            onMouseOut={() => {
+            onBlur={() => {
               this.onHoverChange(false);
             }}
             onFocus={() => {
               this.onHoverChange(true);
             }}
-            onBlur={() => {
+            onMouseOut={() => {
               this.onHoverChange(false);
             }}
+            onMouseOver={() => {
+              this.onHoverChange(true);
+            }}
+            ref={ref}
+            tabIndex={0}
           >
             {this.props.children}
           </span>

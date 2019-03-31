@@ -50,14 +50,14 @@ export class PopperHover extends React.Component<
         }}
       >
         <Popper {...popperProps}>
-          {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
+          {({ arrowProps, placement, ref, scheduleUpdate, style }) => {
             this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
+                data-placement={placement}
                 ref={ref}
                 style={style}
-                data-placement={placement}
               >
                 <ReactResizeDetector
                   handleHeight
@@ -67,9 +67,9 @@ export class PopperHover extends React.Component<
                 />
                 {children}
                 <span
+                  className="popper__arrow"
                   ref={arrowProps.ref}
                   style={arrowProps.style}
-                  className="popper__arrow"
                 />
               </div>
             );

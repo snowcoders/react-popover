@@ -2,9 +2,8 @@ import * as React from "react";
 
 import { PopperBlur, PopperBlurProps } from "./popper.blur";
 
-import { configure, shallow } from "enzyme";
-
 // Configure enzyme
+import { configure, shallow } from "enzyme";
 import Adapter = require("enzyme-adapter-react-16");
 configure({ adapter: new Adapter() });
 

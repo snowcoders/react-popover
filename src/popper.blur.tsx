@@ -44,15 +44,15 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
         ref={this.onRef}
       >
         <Popper {...popperProps}>
-          {({ ref, style, placement, scheduleUpdate, arrowProps }) => {
+          {({ arrowProps, placement, ref, scheduleUpdate, style }) => {
             this.setScheduleUpdate(scheduleUpdate);
             return (
               <div
                 className="content"
-                ref={ref}
-                style={style}
                 data-placement={placement}
                 onClick={this.onPopperClick}
+                ref={ref}
+                style={style}
               >
                 <ReactResizeDetector
                   handleHeight
@@ -62,9 +62,9 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
                 />
                 {children}
                 <span
+                  className="popper__arrow"
                   ref={arrowProps.ref}
                   style={arrowProps.style}
-                  className="popper__arrow"
                 />
               </div>
             );
@@ -82,7 +82,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
     }
   };
 
-  private onRef = (ref: HTMLElement | null) => {
+  private onRef = (ref: null | HTMLElement) => {
     this.contentRef = ref;
   };
 
@@ -102,7 +102,7 @@ export class PopperBlur extends React.Component<PopperBlurProps> {
     }
 
     let isPopperOrChild = false;
-    let parent: Element | null = event.srcElement;
+    let parent: any = event.srcElement;
     while (parent != null) {
       if (this.contentRef == parent) {
         isPopperOrChild = true;
