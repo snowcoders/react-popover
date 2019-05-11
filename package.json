@@ -16,7 +16,7 @@
     "awesome-typescript-loader": "5.2.1",
     "classnames": "2.2.6",
     "enzyme": "3.9.0",
-    "enzyme-adapter-react-16": "1.12.1",
+    "enzyme-adapter-react-16": "1.13.0",
     "husky": "2.2.0",
     "jest": "24.8.0",
     "jsdom": "15.0.0",
