@@ -6,7 +6,7 @@
     "@snowcoders/renovate-config": "1.0.4",
     "@snowcoders/sortier": "3.0.1",
     "@types/classnames": "2.2.9",
-    "@types/enzyme": "3.10.3",
+    "@types/enzyme": "3.10.4",
     "@types/enzyme-adapter-react-15": "1.0.5",
     "@types/enzyme-adapter-react-16": "1.0.5",
     "@types/jest": "24.0.23",
