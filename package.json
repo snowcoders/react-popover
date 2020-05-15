@@ -30,7 +30,7 @@
     "rimraf": "3.0.2",
     "source-map-loader": "0.2.4",
     "source-map-support": "0.5.19",
-    "ts-jest": "25.5.1",
+    "ts-jest": "26.0.0",
     "ts-loader": "7.0.4",
     "tslib": "2.0.0",
     "typescript": "3.9.2",
