@@ -1,3 +1,7 @@
+# Deprecated
+
+Though the concept is still useful, popper.js has new hook options that make implementing the scenarios in here much easier. I highly recommend looking at [their documentation](https://popper.js.org/docs/v2/modifiers/) directly
+
 Wrapper around react-popper that handles ~95% of popper scenarios
 
 [![npm (scoped)](https://img.shields.io/npm/v/@snowcoders/react-popover.svg)](https://www.npmjs.com/package/@snowcoders/react-popover)
